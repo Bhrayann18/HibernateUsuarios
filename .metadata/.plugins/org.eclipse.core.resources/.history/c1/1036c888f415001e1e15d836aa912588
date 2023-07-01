@@ -1,0 +1,83 @@
+package entity;
+
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "Rol")
+public class Rol implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id_Rol;
+
+	@Column(name = "Nombre_Puesto")
+	private String Nombre_Puesto;
+
+	@ManyToMany(mappedBy = "roles")
+	private Set<Usuario> usuario = new HashSet<>();
+
+	@ManyToMany(mappedBy = "roles")
+	private Set<Cargo> cargo = new HashSet<>();
+
+	public Rol() {
+
+	}
+
+	public Rol(String nombre_Puesto) {
+		super();
+		Nombre_Puesto = nombre_Puesto;
+	}
+
+	public Rol(String nombre_Puesto, Set<Usuario> usuario, Set<Cargo> cargo) {
+		super();
+		Nombre_Puesto = nombre_Puesto;
+		this.usuario = usuario;
+		this.cargo = cargo;
+	}
+
+	public long getId_Rol() {
+		return id_Rol;
+	}
+
+	public void setId_Rol(long id_Rol) {
+		this.id_Rol = id_Rol;
+	}
+
+	public String getNombre_Puesto() {
+		return Nombre_Puesto;
+	}
+
+	public void setNombre_Puesto(String nombre_Puesto) {
+		Nombre_Puesto = nombre_Puesto;
+	}
+
+	public Set<Usuario> getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Set<Usuario> usuario) {
+		this.usuario = usuario;
+	}
+
+	public Set<Cargo> getCargo() {
+		return cargo;
+	}
+
+	public void setCargo(Set<Cargo> cargo) {
+		this.cargo = cargo;
+	}
+
+}

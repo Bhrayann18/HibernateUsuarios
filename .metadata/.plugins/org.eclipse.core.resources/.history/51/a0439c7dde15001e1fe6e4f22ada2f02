@@ -1,0 +1,43 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.example</groupId>
+	<artifactId>hibernate-jpa</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	
+	<dependencies>
+		<dependency>
+			<!--Aqui se define la dependencia de la version a utilizar de Hibernate.-->
+		    <groupId>org.hibernate</groupId>
+		    <artifactId>hibernate-core</artifactId>
+		    <version>5.4.18.Final</version>
+		</dependency>
+		<dependency>
+			<!--Aqui se define la dependencia del JPA a utilizar o el estandar.-->
+		    <groupId>javax.persistence</groupId>
+		    <artifactId>persistence-api</artifactId>
+		    <version>1.0.2</version>
+		</dependency>
+		<!--Aqui se define la dependencia de la version a utilizar del conector Mysql.-->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.21</version>
+		</dependency>
+	</dependencies>
+  
+	<build>
+		<!--Aqui se define el plugin de Maven con el cual se trabajara el proyecto.-->
+	    <plugins>
+	      <plugin>
+	        <groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-compiler-plugin</artifactId>
+	        <version>3.8.1</version>
+	        <configuration>
+	          <source>1.8</source>
+	          <target>1.8</target>
+	        </configuration>
+	      </plugin>
+	    </plugins>
+    </build>
+  
+</project>

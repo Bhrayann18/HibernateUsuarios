@@ -1,0 +1,125 @@
+package entity;
+
+import java.io.Serializable;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "Usuario")
+public class Usuario implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
+	// Atributos
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_Usuarios")
+	private long id_Usuarios;
+
+	@Column(name = "Nombre")
+	private String Nombre;
+
+	@Column(name = "Apellido")
+	private String Apellido;
+
+	@Column(name = "Correo")
+	private String Correo;
+
+	@Column(name = "Password")
+	private String Password;
+
+	// Se utiliza la anotacion ManyToMany ya que se necesita relacionar dos tablas
+	// para que dichas tablas compartan una llave primaria
+	// Se utiliza el metodo Persist para que persitan los roles o se actualicen
+	// mediante el metodo Merge
+
+	@ManyToMany(cascade = CascadeType.ALL)
+	// Con esta anotacion se crea la tabla intermedia para realizar la relacion con
+	// la tabla Usuarios y Roles
+	// Ademas se especifica las columnas de la tabla a crear
+	@JoinTable(name = "usuarios_roles", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "rol_id"))
+
+	// Aqui se crea el objeto de la relacion con la clase Rol
+	private List<Rol> roles;
+
+	// Constructor vacio
+	public Usuario() {
+
+	}
+
+	public Usuario(String nombre, String apellido, String correo, String password) {
+		super();
+		this.Nombre = nombre;
+		this.Apellido = apellido;
+		this.Correo = correo;
+		this.Password = password;
+	}
+
+	public Usuario(String nombre, String apellido, String correo, String password, List<Rol> roles) {
+		super();
+		Nombre = nombre;
+		Apellido = apellido;
+		Correo = correo;
+		Password = password;
+		this.roles = roles;
+	}
+
+	public long getId_Usuarios() {
+		return id_Usuarios;
+	}
+
+	public void setId_Usuarios(long id_Usuarios) {
+		this.id_Usuarios = id_Usuarios;
+	}
+
+	public String getNombre() {
+		return Nombre;
+	}
+
+	public void setNombre(String nombre) {
+		Nombre = nombre;
+	}
+
+	public String getApellido() {
+		return Apellido;
+	}
+
+	public void setApellido(String apellido) {
+		Apellido = apellido;
+	}
+
+	public String getCorreo() {
+		return Correo;
+	}
+
+	public void setCorreo(String correo) {
+		Correo = correo;
+	}
+
+	public String getPassword() {
+		return Password;
+	}
+
+	public void setPassword(String password) {
+		Password = password;
+	}
+
+	public List<Rol> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Rol> roles) {
+		this.roles = roles;
+	}
+
+}

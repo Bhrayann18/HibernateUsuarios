@@ -1,0 +1,79 @@
+package entity;
+
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "Usuario")
+public class Usuario implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
+	// Atributos
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_Usuarios")
+	private long id_Usuarios;
+
+	@Column(name = "Nombre")
+	private String Nombre;
+
+	@Column(name = "Apellido")
+	private String Apellido;
+
+	@Column(name = "Correo")
+	private String Correo;
+
+	@Column(name = "Password")
+	private String Password;
+
+	// Se utiliza la anotacion ManyToMany ya que se necesita relacionar dos tablas
+	// para que dichas tablas compartan una llave primaria
+	// Se utiliza el metodo Persist para que persitan los roles o se actualicen
+	// mediante el metodo Merge
+
+	@ManyToMany(cascade = CascadeType.ALL)
+	// Con esta anotacion se crea la tabla intermedia para realizar la relacion con
+	// la tabla Usuarios y Roles
+	// Ademas se especifica las columnas de la tabla a crear
+	@JoinTable(name = "usuarios_roles", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "rol_id"))
+
+	// Aqui se crea el objeto de la relacion con la clase Rol
+	private Collection<Rol> roles;
+
+	// Constructor vacio
+	public Usuario() {
+
+	}
+	// Constructor
+
+	public Usuario(String nombre, String apellido, String correo, String password) {
+		super();
+		this.Nombre = nombre;
+		this.Apellido = apellido;
+		this.Correo = correo;
+		this.Password = password;
+	}
+	public Usuario(String nombre, String apellido, String correo, String password, Collection<Rol> roles) {
+		super();
+		this.Nombre = nombre;
+		this.Apellido = apellido;
+		this.Correo = correo;
+		this.Password = password;
+		this.roles = roles;
+	}
+
+}

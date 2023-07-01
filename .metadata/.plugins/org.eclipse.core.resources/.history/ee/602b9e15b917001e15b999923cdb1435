@@ -1,0 +1,122 @@
+package main;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
+import com.mysql.cj.Query;
+
+import entity.Cargo;
+import entity.Rol;
+import entity.Usuario;
+
+//Clase principal
+public class PersistenceApp {
+
+	public static void main(String[] args) {
+		// **Configuracion Proyecto**
+		// Se trabaja con entityManager Factory para poder persistir los datos de la
+		// aplicacion creada
+		// Ademas aqui se realiza la conexion con la unidad de persistencia creada en el
+		// formato Xml
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("PersistenceAppPU");
+		EntityManager em = emf.createEntityManager();
+
+		try {
+			// Aqui se inicia una transaccion u tarea a ejecutar
+			em.getTransaction().begin();
+
+			// Acontinuacion lo que se realiza en la inyeccion de elementos entity en la
+			// base de datos creada
+			// Aqui se persisten datos
+
+			// Datos entidad Rol
+			Rol rolesOne = new Rol();
+			rolesOne.setNombre_Puesto("Operario");
+
+			Rol rolesTwo = new Rol();
+			rolesTwo.setNombre_Puesto("Vendedor");
+			// En las entidades se tuvo en cuenta el uso de un HashSet para que los valores
+			// a ingresar no sean duplicados y
+			// ademas HashSet implementa la interfaz utilizada Set.
+			// HashSet al tener acceso directo al un elemento este acceso hacer que esta
+			// clase sea la ideal para inserccion, busqueda
+			// y borrado de un elemento en base a una clave o llave
+			Set<Rol> roles = new HashSet<Rol>();
+			// En esta parte lo que se realiza en mediante add es agregar los datos
+			// anteriormente estructurados
+			roles.add(rolesOne);
+			roles.add(rolesTwo);
+
+			// Datos entidad Usuario
+			Usuario usuarioOne = new Usuario();
+			usuarioOne.setNombre("Raul");
+			usuarioOne.setApellido("Fernandez");
+			usuarioOne.setCorreo("raul22@gmail.com");
+			usuarioOne.setPassword("Ruw554");
+
+			Usuario usuarioTwo = new Usuario();
+			usuarioTwo.setNombre("Steven");
+			usuarioTwo.setApellido("Cortes");
+			usuarioTwo.setCorreo("Steven22@gmail.com");
+			usuarioTwo.setPassword("steve55");
+
+			Set<Usuario> usuario = new HashSet<Usuario>();
+			usuario.add(usuarioOne);
+			usuario.add(usuarioTwo);
+
+			usuarioOne.setRoles(roles);
+			usuarioTwo.setRoles(roles);
+
+			// Datos entidad Cargo
+			Cargo cargoOne = new Cargo();
+			cargoOne.setNombre_Puesto("Operario maquina plana");
+			cargoOne.setNumero_Cuenta("6543-8785-3246-9896");
+			cargoOne.setValor_Salario("1,200,000");
+
+			Cargo cargoTwo = new Cargo();
+			cargoTwo.setNombre_Puesto("Administrador pagina ventas");
+			cargoTwo.setNumero_Cuenta("6575-1347-9867-5465");
+			cargoTwo.setValor_Salario("950,000");
+
+			List<Cargo> cargo = new ArrayList<Cargo>();
+			cargo.add(cargoOne);
+			cargo.add(cargoTwo);
+
+			rolesOne.setCargo(cargoOne);
+			rolesTwo.setCargo(cargoTwo);
+			// Aqui lo que se hace introducir la entidad la cual se quiere persistir
+			// En este caso como Usuario y Cargo son las entidades propietarias del lado
+			// ManyToMany seran las clases las cuales se persisten
+			em.persist(usuarioOne);
+			em.persist(usuarioTwo);
+			em.persist(rolesOne);
+			em.persist(rolesTwo);
+			// Este metodo lo que hace es limpiar la conexion
+			em.flush();
+
+			// Este commit lo que hace es confirmar la transaccion o cambio realizado en la
+			// persistencia creada
+			em.getTransaction().commit();
+			
+			List<Usuario> result = em.createQuery(
+					"SELECT e " +
+					"FROM Usuario p JOIN p.usuario e " +
+					"WHERE p.nombre = ?1")
+					.setParameter(1, usuarioOne)
+					.getResultList();
+					
+		} catch (Exception e) {
+			// Se trabaja tambien con rollback para revertir la transaccion de la
+			// persistencia creada
+			em.getTransaction().rollback();
+		}
+
+	}
+
+}

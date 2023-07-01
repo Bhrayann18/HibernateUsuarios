@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+             http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+             version="2.0" xmlns="http://java.sun.com/xml/ns/persistence">
+<!--Aqui se crea la unidad de persistencia para realizar la conexion con Mysql y los procesos a realizar.-->
+  <persistence-unit name="PersistenceAppPU" transaction-type="RESOURCE_LOCAL">
+    <properties>
+    <!--Se define el puerto de la conexion y la base de datos a utilizar.-->
+        <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/Cortesoftware?serverTimezone=UTC"/>
+      	<!--Nombre de usuario de la conexion.-->
+      	<property name="javax.persistence.jdbc.user" value="root"/>
+      	<!--Se declara el driver de la conexion que es JDBC.-->
+      	<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+      	<!--Contraseña de la conexion.-->
+      	<property name="javax.persistence.jdbc.password" value="keynton"/>
+        <property name="javax.persistence.schema-generation.database.action" value="create"/>
+    </properties>
+  </persistence-unit>
+
+</persistence>
